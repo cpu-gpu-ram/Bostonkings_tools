@@ -513,16 +513,84 @@ def PyShell():
 
         if not matched:
             print("Command not recognized. Please try again.")
+
+
+
+
+def organizer(target_dir=None):
+    # Prompt if no directory given
+    if target_dir is None:
+        target_dir = input("What folder would you like to organize? (Leave blank for current): ").strip()
+        if not target_dir:
+            target_dir = os.getcwd()
+
+    target_path = Path(target_dir).expanduser().resolve()
+
+    # Verify folder exists
+    if not target_path.is_dir():
+        print(f"Error: '{target_path}' is not a valid directory.")
+        return
+
+    categories = {
+        "Images": ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
+        "Documents": ['.pdf', '.docx', '.doc', '.txt', '.xlsx', '.csv'],
+        "Audio": ['.mp3', '.wav', '.aac'],
+        "Video": ['.mp4', '.mkv', '.mov'],
+        "Archives": ['.zip', '.rar', '.tar', '.7z'],
+    }
+
+    # Build a fast extension -> category lookup
+    ext_to_category = {
+        ext: cat for cat, exts in categories.items() for ext in exts
+    }
+
+    for item in target_path.iterdir():
+        # Skip directories
+        if item.is_dir():
+            continue
+
+        # Never touch the script itself
+        if item.name == "TOOLS.py":
+            continue
+
+        ext = item.suffix.lower()
+        category = ext_to_category.get(ext)
+        if category is None:
+            continue  # Unrecognized extension, leave it alone
+
+        dest_dir = target_path / category
+        dest_dir.mkdir(exist_ok=True)
+
+        dest_path = dest_dir / item.name
+
+        # Resolve naming conflicts with a counter suffix
+        if dest_path.exists():
+            stem, suffix = item.stem, item.suffix
+            counter = 1
+            while dest_path.exists():
+                dest_path = dest_dir / f"{stem}_{counter}{suffix}"
+                counter += 1
+
+        try:
+            shutil.move(str(item), str(dest_path))
+            print(f"Moved: {item.name} -> {category}/{dest_path.name}")
+        except (PermissionError, OSError) as e:
+            print(f"Could not move '{item.name}': {e}")
+            continue
+
+    print("Organizing complete.")
+
 #main loop
 switch = True
 while switch == True:
     Greeter()
     command = input()
-
-    if command == '1':
-        PyShell()
-    elif command == 'q':
+    if command == 'q':
         switch = False
+    elif command == '1':
+        PyShell()
+    elif command == '2':
+        organizer()
     else:
         print('invaild input fuck you read to docs')
         time.sleep(5)
