@@ -33,3 +33,13 @@ def Greeter():
         before using this please read the read me for help in Py-Shell and any other tool type sos/help
         check out my profile at: https://github.com/cpu-gpu-ram
         emergency exit Ctrl c')
+    print(r'
+          1.Py-Shell-human readable shell cover
+          Quit = Q')
+    uinput = input()
+def selection() :
+    if uniput == '1':
+        Py-Shell()
+
+    else:
+        print('invaild input fuck you read to docs')
