@@ -517,6 +517,7 @@ def PyShell():
 
 
 
+
 def organizer(target_dir=None):
     # Prompt if no directory given
     if target_dir is None:
@@ -524,7 +525,7 @@ def organizer(target_dir=None):
         if not target_dir:
             target_dir = os.getcwd()
 
-    target_path = Path(target_dir).expanduser().resolve()
+    target_path = pathlib.Path(target_dir).expanduser().resolve()
 
     # Verify folder exists
     if not target_path.is_dir():
@@ -532,17 +533,27 @@ def organizer(target_dir=None):
         return
 
     categories = {
-        "Images": ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
-        "Documents": ['.pdf', '.docx', '.doc', '.txt', '.xlsx', '.csv'],
-        "Audio": ['.mp3', '.wav', '.aac'],
-        "Video": ['.mp4', '.mkv', '.mov'],
-        "Archives": ['.zip', '.rar', '.tar', '.7z'],
+        "Images": ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg', '.webp', '.tiff', '.tif', '.heic', '.ico'],
+        "Documents": ['.pdf', '.docx', '.doc', '.txt', '.xlsx', '.xls', '.csv', '.pptx', '.ppt',
+                      '.odt', '.ods', '.odp', '.rtf', '.md', '.epub'],
+        "Audio": ['.mp3', '.wav', '.aac', '.flac', '.ogg', '.m4a', '.wma'],
+        "Video": ['.mp4', '.mkv', '.mov', '.avi', '.wmv', '.flv', '.webm', '.m4v'],
+        "Archives": ['.zip', '.rar', '.tar', '.7z', '.gz', '.bz2', '.xz', '.iso'],
+        "Executables": ['.exe', '.msi', '.app', '.deb', '.rpm', '.dmg', '.apk', '.bin', '.appimage'],
+        "Scripts_and_Code": ['.py', '.sh', '.bash', '.zsh', '.bat', '.ps1', '.js', '.ts', '.html',
+                              '.css', '.json', '.xml', '.yaml', '.yml', '.c', '.cpp', '.h', '.java',
+                              '.go', '.rs', '.rb', '.php', '.sql'],
+        "Fonts": ['.ttf', '.otf', '.woff', '.woff2'],
     }
 
     # Build a fast extension -> category lookup
     ext_to_category = {
         ext: cat for cat, exts in categories.items() for ext in exts
     }
+
+    # Catch-all bucket for any extension not explicitly listed above
+    OTHER_CATEGORY = "Other"
+    NO_EXTENSION_CATEGORY = "No_Extension"
 
     for item in target_path.iterdir():
         # Skip directories
@@ -554,9 +565,10 @@ def organizer(target_dir=None):
             continue
 
         ext = item.suffix.lower()
-        category = ext_to_category.get(ext)
-        if category is None:
-            continue  # Unrecognized extension, leave it alone
+        if not ext:
+            category = NO_EXTENSION_CATEGORY
+        else:
+            category = ext_to_category.get(ext, OTHER_CATEGORY)
 
         dest_dir = target_path / category
         dest_dir.mkdir(exist_ok=True)
@@ -579,6 +591,8 @@ def organizer(target_dir=None):
             continue
 
     print("Organizing complete.")
+
+
 
 #main loop
 switch = True
