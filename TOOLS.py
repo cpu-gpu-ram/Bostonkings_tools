@@ -52,19 +52,18 @@ before using this please read the read me for help in Py-Shell and any other too
 check out my profile at: https://github.com/cpu-gpu-ram
 emergency exit Ctrl c""")
     print(r"""
-1.Py-Shell-human readable shell cover
-2.Organizer-sorts your files into folders by type
-3.Dupe Finder-scans a folder and lets u delete duplicate files
-4.Bulk Renamer-renames every file in a folder with a prefix and number
-5.Backup-zips a folder into a timestamped backup
-6.Cipher-caesar cipher encoder/decoder for text
-7.Dir Sizes-shows the size of everything in a folder, biggest first
-8.Empty Folder Cleaner-finds and deletes empty subfolders
-9.Ext Counter-counts files by extension in a folder
-10.Old Files-finds files that havent been touched in X days
-11.Grep-searches inside files for a keyword, not just filenames
-12.Todo-a quick todo list saved to todo.txt
-13.ASCII Gallery-animated big ascii art slideshow
+1.Py-Shell          |       11.Grep-searches
+2.Organizer         |       12.ToDo-list
+3.Dupe Finder       |       13.Art
+4.Bulk Renamer      |       14.Calculator
+5.Backup-zips       |       15.??????????
+6.Cipher-caesar     |       16.???????????
+7.Dir Sizes         |
+8.Empty Folder      |
+9.Ext Counter       |
+10.Old Files        |
+
+
 Quit = Q""")
 
 
@@ -1742,8 +1741,32 @@ def ascii_gallery():
         progress_bar(i, total, prefix=f'{name:<10}')
         time.sleep(1.2)
     print("\nThat's the whole gallery. GG!\n")
+def adcalc():
+    expression = input("Enter expression (spaces between everything, e.g., 2 + 3 * 4): ")
+    digits = expression.split()
 
+    try:
+        # Start with the first number
+        result = float(digits[0])
 
+        # Loop through the operators and next numbers
+        for i in range(1, len(digits), 2):
+            op = digits[i]
+            next_num = float(digits[i+1])
+
+            if op == '+':
+                result += next_num
+            elif op == '-':
+                result -= next_num
+            elif op == '*':
+                result *= next_num
+            elif op == '/':
+                result /= next_num
+            else: raise ValueError
+
+        print(f"Result: {result}")
+    except Exception:
+        print("Error: Make sure to use spaces (e.g., 5 + 10 * 2)")
 
 #main loop
 switch = True
@@ -1779,6 +1802,8 @@ while switch == True:
         todo()
     elif command == '13':
         ascii_gallery()
+    elif command == '14':
+        adcalc()
     else:
         print('invaild input fuck you read to docs')
         time.sleep(5)
