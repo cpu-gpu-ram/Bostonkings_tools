@@ -34,6 +34,10 @@ def progress_bar(current, total, prefix='', length=30):
 
 #import all the otther projects
 def Greeter():
+    if sys.platform.startswith('win'):
+        os.system('cls')
+    else:
+        os.system('clear')
     #BUG FIX: had 4 quotes (r"""") instead of 3, the extra " was printing a stray quote mark above the logo
     print(r"""
     __  __
@@ -52,17 +56,18 @@ before using this please read the read me for help in Py-Shell and any other too
 check out my profile at: https://github.com/cpu-gpu-ram
 emergency exit Ctrl c""")
     print(r"""
+===============================================
 1.Py-Shell          |       11.Grep-searches
 2.Organizer         |       12.ToDo-list
 3.Dupe Finder       |       13.Art
 4.Bulk Renamer      |       14.Calculator
 5.Backup-zips       |       15.??????????
 6.Cipher-caesar     |       16.???????????
-7.Dir Sizes         |
-8.Empty Folder      |
-9.Ext Counter       |
-10.Old Files        |
-
+7.Dir Sizes         |       17.??????????
+8.Empty Folder      |       18.?????????
+9.Ext Counter       |       19.????????????
+10.Old Files        |       20.???????
+================================================
 
 Quit = Q""")
 
@@ -856,6 +861,7 @@ def PyShell():
 
         if command.lower() == 'exit':
             print("Exiting the program. Goodbye!")
+            time.sleep(5)
             break
 
         try:
@@ -903,6 +909,7 @@ def organizer(target_dir=None):
     # Verify folder exists
     if not target_path.is_dir():
         print(f"Error: '{target_path}' is not a valid directory.")
+        time.sleep(5)
         return
 
     categories = {
@@ -932,6 +939,7 @@ def organizer(target_dir=None):
     total = len(items)
     if total == 0:
         print("Nothing to organize here.")
+        time.sleep(5)
         return
 
     for i, item in enumerate(items, 1):
@@ -964,6 +972,7 @@ def organizer(target_dir=None):
         progress_bar(i, total, prefix='Organizing')
 
     print("Organizing complete.")
+    time.sleep(5)
 
 
 
@@ -979,6 +988,7 @@ def dupe_finder(target_dir=None):
     # Verify folder exists
     if not target_path.is_dir():
         print(f"Error: '{target_path}' is not a valid directory.")
+        time.sleep(5)
         return
 
     print("Scanning for duplicates, this might take a sec...")
@@ -1026,6 +1036,7 @@ def dupe_finder(target_dir=None):
     if not dupes_found:
         print("No duplicates found.")
     print("Duplicate scan complete.")
+    time.sleep(5)
 
 
 
@@ -1040,6 +1051,7 @@ def bulk_rename(target_dir=None):
 
     if not target_path.is_dir():
         print(f"Error: '{target_path}' is not a valid directory.")
+        time.sleep(5)
         return
 
     prefix = input("Prefix to add (blank for none): ")
@@ -1048,11 +1060,13 @@ def bulk_rename(target_dir=None):
         counter = int(start_num) if start_num else 1
     except ValueError:
         print("Enter a number.")
+        time.sleep(5)
         return
 
     files = sorted([f for f in target_path.iterdir() if f.is_file() and f.name != os.path.basename(__file__)])
     if not files:
         print("No files found.")
+        time.sleep(5)
         return
 
     #BUG FIX: renaming files one by one in place could overwrite a not-yet-renamed file
@@ -1080,6 +1094,7 @@ def bulk_rename(target_dir=None):
         progress_bar(i, len(temp_paths), prefix='Renaming')
 
     print("Bulk rename complete.")
+    time.sleep(5)
 
 
 
@@ -1094,6 +1109,7 @@ def backup(target_dir=None):
 
     if not target_path.is_dir():
         print(f"Error: '{target_path}' is not a valid directory.")
+        time.sleep(5)
         return
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -1107,6 +1123,7 @@ def backup(target_dir=None):
     total = len(all_files)
     if total == 0:
         print("Nothing to back up here.")
+        time.sleep(5)
         return
 
     try:
@@ -1118,6 +1135,7 @@ def backup(target_dir=None):
         print(f"Backed up {target_path} to {backup_name}.")
     except OSError as e:
         print(f"Backup failed: {e}")
+    time.sleep(5)
 
 
 
@@ -1129,6 +1147,7 @@ def cipher():
         shift = int(shift_input) if shift_input else 3
     except ValueError:
         print("Enter a number.")
+        time.sleep(5)
         return
 
     mode = input("Encode or decode ? (e/d): ").strip().lower()
@@ -1143,6 +1162,7 @@ def cipher():
         else:
             result += char
     print(f"Result: {result}")
+    time.sleep(5)
 
 
 
@@ -1157,12 +1177,14 @@ def dir_sizes(target_dir=None):
 
     if not target_path.is_dir():
         print(f"Error: '{target_path}' is not a valid directory.")
+        time.sleep(5)
         return
 
     items = list(target_path.iterdir())
     total = len(items)
     if total == 0:
         print("Nothing here to measure.")
+        time.sleep(5)
         return
 
     sizes = {}
@@ -1185,6 +1207,7 @@ def dir_sizes(target_dir=None):
 
     if not sizes:
         print("Nothing here to measure.")
+        time.sleep(5)
         return
 
     for name, size in sorted(sizes.items(), key=lambda x: x[1], reverse=True):
@@ -1192,6 +1215,7 @@ def dir_sizes(target_dir=None):
             print(f"{name}: {size // 2**10} KB")
         else:
             print(f"{name}: {size // 2**20} MB")
+    time.sleep(5)
 
 
 
@@ -1206,6 +1230,7 @@ def empty_folders(target_dir=None):
 
     if not target_path.is_dir():
         print(f"Error: '{target_path}' is not a valid directory.")
+        time.sleep(5)
         return
 
     empties = []
@@ -1215,6 +1240,7 @@ def empty_folders(target_dir=None):
 
     if not empties:
         print("No empty folders found.")
+        time.sleep(5)
         return
 
     print("Empty folders found:")
@@ -1233,6 +1259,7 @@ def empty_folders(target_dir=None):
                 print()
                 print(f"Could not remove {folder}: {e}")
             progress_bar(i, total, prefix='Deleting')
+    time.sleep(5)
 
 
 
@@ -1247,6 +1274,7 @@ def ext_count(target_dir=None):
 
     if not target_path.is_dir():
         print(f"Error: '{target_path}' is not a valid directory.")
+        time.sleep(5)
         return
 
     all_files = []
@@ -1257,6 +1285,7 @@ def ext_count(target_dir=None):
     total = len(all_files)
     if total == 0:
         print("No files found.")
+        time.sleep(5)
         return
 
     counts = {}
@@ -1269,6 +1298,7 @@ def ext_count(target_dir=None):
 
     for ext, count in sorted(counts.items(), key=lambda x: x[1], reverse=True):
         print(f"{ext}: {count}")
+    time.sleep(5)
 
 
 
@@ -1283,6 +1313,7 @@ def old_files(target_dir=None):
 
     if not target_path.is_dir():
         print(f"Error: '{target_path}' is not a valid directory.")
+        time.sleep(5)
         return
 
     days_input = input("Show files untouched for how many days (blank for 30): ").strip()
@@ -1290,6 +1321,7 @@ def old_files(target_dir=None):
         days = int(days_input) if days_input else 30
     except ValueError:
         print("Enter a number.")
+        time.sleep(5)
         return
 
     cutoff = time.time() - (days * 86400)
@@ -1301,6 +1333,7 @@ def old_files(target_dir=None):
     total = len(all_files)
     if total == 0:
         print("No files found.")
+        time.sleep(5)
         return
 
     found = False
@@ -1318,6 +1351,7 @@ def old_files(target_dir=None):
 
     if not found:
         print(f"No files older than {days} days found.")
+    time.sleep(5)
 
 
 
@@ -1332,6 +1366,7 @@ def grep(target_dir=None):
 
     if not target_path.is_dir():
         print(f"Error: '{target_path}' is not a valid directory.")
+        time.sleep(5)
         return
 
     keyword = input("What text are you searching for ? ")
@@ -1344,6 +1379,7 @@ def grep(target_dir=None):
     total = len(all_files)
     if total == 0:
         print("No files found.")
+        time.sleep(5)
         return
 
     found = False
@@ -1361,6 +1397,7 @@ def grep(target_dir=None):
 
     if not found:
         print(f"No matches found for '{keyword}'.")
+    time.sleep(5)
 
 
 
@@ -1411,6 +1448,7 @@ def todo():
             print(f"Removed: {removed.strip()}")
         except (IndexError, ValueError):
             print("Could not find that task.")
+    time.sleep(5)
 
 
 
@@ -1741,6 +1779,7 @@ def ascii_gallery():
         progress_bar(i, total, prefix=f'{name:<10}')
         time.sleep(1.2)
     print("\nThat's the whole gallery. GG!\n")
+    time.sleep(5)
 def adcalc():
     expression = input("Enter expression (spaces between everything, e.g., 2 + 3 * 4): ")
     digits = expression.split()
@@ -1767,7 +1806,8 @@ def adcalc():
         print(f"Result: {result}")
     except Exception:
         print("Error: Make sure to use spaces (e.g., 5 + 10 * 2)")
-
+        time.sleep(5)
+    time.sleep(5)
 #main loop
 switch = True
 while switch == True:
