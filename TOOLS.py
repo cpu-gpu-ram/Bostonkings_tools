@@ -1816,6 +1816,16 @@ while switch == True:
     #BUG FIX: Greeter() tells the user "Quit = Q" but this used to only match lowercase 'q'
     if command == 'q':
         switch = False
+    elif command == 'c':
+        path = input('What directory/path ?')
+        if  path == 'home' or path == '~':
+            path = os.path.expanduser('~')
+        try:
+            os.chdir(path)
+            print(f"Changed directory to {path}")
+        except FileNotFoundError:
+            print(f"Directory {path} not found.")
+    
     elif command == '1':
         PyShell()
     elif command == '2':
