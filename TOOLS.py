@@ -69,7 +69,7 @@ emergency exit Ctrl c""")
 10.Old Files        |       20.???????
 ================================================
 
-Quit = Q""")
+Quit = Q                To Change directory = C""")               
 
 
 
@@ -1823,8 +1823,10 @@ while switch == True:
         try:
             os.chdir(path)
             print(f"Changed directory to {path}")
+            time.sleep(5)
         except FileNotFoundError:
             print(f"Directory {path} not found.")
+            time.sleep(5)
     
     elif command == '1':
         PyShell()
